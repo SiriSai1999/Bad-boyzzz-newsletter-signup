@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+let mykey = config.my_key;
+
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({
   extended: true
@@ -37,7 +39,7 @@ app.post("/", function(req, res) {
   const url = "https://us10.api.mailchimp.com/3.0/lists/50e0d4f45f";
 
   const options = {
-    auth: 'Sai:d3b6f1ac5f3c8391391640daa08defd5-us10',
+    auth: my_key,
     method: 'POST'
   };
 
@@ -48,17 +50,13 @@ app.post("/", function(req, res) {
     } else {
       res.sendFile(__dirname + "/failure.html");
     }
-
-    res.on("data", function(data) {
-      console.log(JSON.parse(data), res.statusCode);
-    });
   });
 
   request.write(jsonData);
   request.end();
 });
 
-app.post("/failure",function(req, res){
+app.post("/failure", function(req, res) {
   res.redirect("/");
 });
 
